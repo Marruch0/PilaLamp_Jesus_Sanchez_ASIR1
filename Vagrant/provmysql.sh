@@ -17,3 +17,4 @@ EOF
 sed -i 's/^bind-address.*/bind-address = 172.31.1.11/' /etc/mysql/mysql.conf.d/mysqld.cnf
 sudo systemctl restart mysql
 sudo ip route del default
+sudo ip route del default

@@ -1,10 +1,12 @@
+# Trabajo Pila Lamp
+
 # Creación de VagrantFile
 
-Para crear un vagrantfile primero que nada nos situaremos en el directorio que queramos usar, lo recomendable es crear una nuevo y trabajar en él. En mi caso crearé y trabajaré en uno llamado `PilaLamp`
+Para crear un vagrant file primero que nada nos situaremos en el directorio que queramos usar, lo recomendable es crear uno nuevo y trabajar en él. En mi caso crearé y trabajaré en uno llamado `PilaLamp`
 
 Para crearlo ejecutamos el comando `mkdir nombre` 
 
-Una vez creado nos entramos dentro de un directorio sino tenemos instalado vagrant lo instalaremos primero, yo lo he instalado en Fedora ya que es el sistema operativo que uso. Para instalarlo ejecutamos los siguentes comandos:
+Una vez creado nos entramos dentro de un directorio sino tenemos instalado vagrant lo instalaremos primero, yo lo he instalado en Fedora ya que es el sistema operativo que uso. Para instalarlo ejecutamos los siguientes comandos:
 
 - `sudo dnf install -y dnf-plugins-core`
 - `sudo dnf config-manager --add-repo https://rpm.releases.hashicorp.com/fedora/hashicorp.repo`
@@ -110,15 +112,15 @@ sudo systemctl restart apache2
 
 El anterior script para el provisión nos permite levantar la maquina totalmente operativa y funcional, sin embargo es importante saber que hace y porque lo estamos haciendo. Por lo tanto voy a explicar como sería una configuración manual.
 
-Una vez que hemos hecho el `vagrant up` nos conectamos a la maquina por ssh, vagrant permite hacerlo de manera muy sencilla. Simplemente ejecutamos el comando → `vagrant ssh nombre` en nombre pondremos el nombre que le hemos puesto a la maquina de apache, en mi caso se llama JesusSanApache, por lo tanto quedaria así `vagrant ssh JesusSanApache.`
+Una vez que hemos hecho el `vagrant up` nos conectamos a la maquina por ssh, vagrant permite hacerlo de manera muy sencilla. Simplemente ejecutamos el comando → `vagrant ssh nombre` en nombre pondremos el nombre que le hemos puesto a la maquina de apache, en mi caso se llama JesusSanApache, por lo tanto quedaría así `vagrant ssh JesusSanApache.`
 
-Una vez que estamos conectados a la maquina lo primero que haremos será actualizar los paquetes y librerias con `sudo apt update`.
+Una vez que estamos conectados a la maquina lo primero que haremos será actualizar los paquetes y librerías con `sudo apt update`.
 
 Una vez actualizado instalaremos apache usando el comando `sudo apt install apache2 -y`
 
-Después de tener apache2 instalado vamos instalar php y los modulos correspontientes para conectar apache2 y mysql con php. Esto lo haremos ejcutando el comando `sudo apt install php libapache2-mod-php php-mysql -y`
+Después de tener apache2 instalado vamos instalar php y los módulos correspondientes para conectar apache2 y mysql con php. Esto lo haremos ejecutando el comando `sudo apt install php libapache2-mod-php php-mysql -y`
 
-Una vez instalado nos iremos con `cd` a la ruta `/var/www/html` la cual es la ruta por defecto donde estarán alojadas el codigo y los configuraciones de la página. Ahora vamos a crear un directorio que será donde vamos a instalar nuestra pagina, en mi caso la he llamado `GestAlumnos`.
+Una vez instalado nos iremos con `cd` a la ruta `/var/www/html` la cual es la ruta por defecto donde estarán alojados el codigo y los configuraciones de la página. Ahora vamos a crear un directorio que será donde vamos a instalar nuestra pagina, en mi caso la he llamado `GestAlumnos`
 
 Nos entramos en el directorio con `cd` y descargamos con `git clone` el siguiente enlace:
 
@@ -132,7 +134,7 @@ Ahora moveremos todo lo que hay dentro al directorio actual y eliminaremos lo qu
 - `sudo rm README*`
 - `sudo rm /var/www/html/index.html`
 
-Una vez que hemos eliminado lo que no necesitamos nos vamos a ir a ir al directorio de configuración de apache que esta en la ruta `/etc/apache2` y dentro de aquí nos iremos a `sites-avaliable`, dentro de este directorio lo que encontramos son los sitios que estan disponibles pero no habilitados por lo que podemos aprovechar eso y copiar el sitio por defecto para crear nosotros uno nuevo. 
+Una vez que hemos eliminado lo que no necesitamos nos vamos a ir a ir al directorio de configuración de apache que esta en la ruta `/etc/apache2` y dentro de aquí nos iremos a `sites-avaliable`, dentro de este directorio lo que encontramos son los sitios que están disponibles pero no habilitados por lo que podemos aprovechar eso y copiar el sitio por defecto para crear nosotros uno nuevo. 
 
 Copiamos el fichero de configuración y lo renombramos con `sudo cp 000-default.conf gestalumnos`
 
@@ -148,7 +150,7 @@ Ahora lo editaremos con nano, cuando lo abrimos nos encontramos algo como esto:
 </VirtualHost>
 ```
 
-Tendremos que la ruta que viene por defecto ya que está apuntado a html y la nuestra tendra que apuntar al directorio que hemos creado y al directorio donde se encuentra todo que seria `/GestAlumnos/src`
+Veremos que la ruta que viene por defecto está apuntado a html y la nuestra tendrá que apuntar al directorio que hemos creado y al directorio donde se encuentra todo que seria `/GestAlumnos/src`
 
 Por ello el fichero editado quedaría así:
 
@@ -162,9 +164,7 @@ Por ello el fichero editado quedaría así:
 </VirtualHost>
 ```
 
-Ahora en el directorio de src concretamente en `/var/www/html/GestAlumnos/src`, aquí encontraremos un fichero llamado `config.php`, dentro de este definiremos el host de la base de datos(IP del servidor mysql), el nombre, el usuario y su contraseña. En mi caso el fichero quedará
-
-así:
+Ahora en el directorio de src concretamente en `/var/www/html/GestAlumnos/src`, encontraremos un fichero llamado `config.php`, dentro de este definiremos el host de la base de datos(IP del servidor mysql), el nombre, el usuario y su contraseña. En mi caso el fichero quedará así:
 
 ```php
 <?php
@@ -179,7 +179,7 @@ define('DB_PASSWORD', '1234-Lamp');
 ?>
 ```
 
-—Punto importante— Si lo vamos añadir para el provision importante que en '$mysqli' antes poner una barra invertida, así \'$mysqli' para que a la hora de ejecutarlo el provision no lo tome como una variable ya que sino no lo pondrá en el fichero.
+—Punto importante— Si lo vamos añadir para el provision importante que en `'$mysqli'` habría que añadir una barra invertida, así: `\'$mysqli'` para que a la hora de ejecutarlo el provision no lo tome como una variable ya que sino no lo pondrá en el fichero.
 
 Guardamos el fichero y habilitamos el sitio con → `sudo a2ensite gestalumnos.conf`
 
@@ -233,7 +233,7 @@ sudo ip route del default
 
 Primero que nada nos conectaremos por ssh a la maquina, para ello como hemos hecho con el servidor de apache2 haremos `vagrant ssh` y el nombre que en mi caso es `JesusSanMysql`
 
-Una vez estamos conectados a la maquina haremos un `sudo apt update` para actualizar las librerias.
+Una vez estamos conectados a la maquina haremos un `sudo apt update` para actualizar las librerías.
 
 Ahora instalaremos mysql-server con `sudo apt install mysql-server -y`
 
@@ -247,7 +247,7 @@ Ahora borraremos todo menos la base de datos con:
 - `sudo rm -r src/`
 - `sudo rm README*`
 
-Ahora nos entraremos en el directorio llamado `db` y alli encontraremos un fichero de nombre `database.sql` cuyo contenido es el siguiente:
+Ahora nos entraremos en el directorio llamado `db` y allí encontraremos un fichero de nombre `database.sql` cuyo contenido es el siguiente:
 
 ```php
 DROP DATABASE IF EXISTS lamp_db;
@@ -263,17 +263,17 @@ CREATE TABLE users (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
-Aquí encontraremos un script de creación de la base de datos, para poder crear usando la base de datos usando el .sql, elevamos priviligeios como root con `sudo su` y ejecutamos el siguiente comando: `mysql -u root < database.sql`
+Aquí encontraremos un script de creación de la base de datos, para poder crear usando la base de datos usando el .sql, elevamos privilegios como root con `sudo su` y ejecutamos el siguiente comando: `mysql -u root < database.sql`
 
-Ahora para asegurarnos de que funciona nos entraremos a la base de datos como root con `mysql -u root`. Una vez que estamos dentro de mysql  podemos comprobar que la base de datos está haciendo `show databases;`, si el script se ejecutó bien ahora deberiamos de tener una base de datos llamada lamp_db.
+Ahora para asegurarnos de que funciona nos entraremos a la base de datos como root con `mysql -u root`. Una vez que estamos dentro de mysql  podemos comprobar que la base de datos está haciendo `show databases;`, si el script se ejecutó bien ahora deberíamos de tener una base de datos llamada lamp_db.
 
-Ahora vamos a crear una usuario y a darles privilegios, este usuario es el que usararemos para poder conectar la base de datos y apache, que es el que hemos añadido en el config.php anteriormente.
+Ahora vamos a crear un usuario y a darles privilegios, este usuario es el que usuraremos para poder conectar la base de datos y apache, que es el que hemos añadido en el `config.php` anteriormente.
 
 Para ello primero creamos el usuario con:
 
 `CREATE USER IF NOT EXISTS 'lamp_user'@'172.31.1.10' IDENTIFIED BY '1234-Lamp';`
 
-Si nos fijamos la ip que le ponemos la ip del servidor de apache y no la del servidor de mysql, mucho cuidado con eso.
+Si nos fijamos la ip que le ponemos es la ip del servidor de apache y no la del servidor de mysql, mucho cuidado con eso.
 
 Ahora le daremos los permisos necesarios con:
 
@@ -283,11 +283,11 @@ Y aplicamos los permisos con:
 
 `FLUSH PRIVILEGES;`
 
-Ahora tendremos que edtiar en el fichero `mysqld.cnf` la ipa del `bind-address`, aquí le tendremos que inidicar la ip del servidor mysql, en mi caso es `172.31.1.11`.
+Ahora tendremos que editar en el fichero `mysqld.cnf` la ip del `bind-address`, aquí le tendremos que indicar la ip del servidor mysql, en mi caso es `172.31.1.11`.
 
 La ruta donde esta este fichero es `/etc/mysql/mysql.conf.d/mysqld.cnf` mucho ojo ya que hay dos archivos uno acabado en d y otro no, tenemos que editar el que acaba en d.
 
-Ahora lo ultimo que quedaría es restart mysql con `sudo systemctl restart mysql` y para seguridad le quitaremos la puerta de enlace de la nat para que no tenga salida a internet, esto lo haremos con `sudo ip route del default`
+Ahora lo ultimo que quedaría es reiniciar mysql con `sudo systemctl restart mysql` y para una mejor seguridad le quitaremos la puerta de enlace de la nat para que no tenga salida a internet, esto lo haremos con `sudo ip route del default`
 
 # Comprobación del funcionamiento
 ![imagen](https://github.com/user-attachments/assets/0e522d4d-bb8a-451a-9f0c-555a8e77173a)
